@@ -8,7 +8,6 @@ var Twitter = new twit(config);
 // https://dev.twitter.com/rest/reference/get/search/tweets
 // A UTF-8, URL-encoded search query of 500 characters maximum, including operators. 
 // Queries may additionally be limited by complexity.
-// var queryString = '100daysofcode';
 
 var queryList = [
     '100daysofcode',
@@ -58,8 +57,8 @@ var retweet = function() {
 
 // grab & retweet as soon as program is running...
 retweet();
-// retweet in every twenty minutes
-setInterval(retweet, 1.2e+6);
+// retweet in every five minutes
+setInterval(retweet, 300000);
 
 // FAVORITE BOT====================
 
@@ -96,8 +95,8 @@ var favoriteTweet = function(){
 
 // grab & 'favorite' as soon as program is running...
 favoriteTweet();
-// 'favorite' a tweet in every fifteen minutes
-setInterval(favoriteTweet, 900000);
+// 'favorite' a tweet in every five minutes
+setInterval(favoriteTweet, 300000);
 
 // STREAM API for interacting with a USER =======
 // set up a user stream
