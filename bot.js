@@ -8,7 +8,7 @@ var Twitter = new twit(config);
 // https://dev.twitter.com/rest/reference/get/search/tweets
 // A UTF-8, URL-encoded search query of 500 characters maximum, including operators. 
 // Queries may additionally be limited by complexity.
-var queryString = '#100DaysOfCode, #100daysofcode, #GitHub, #github';
+var queryString = '100daysofcode, github, freecodecamp';
 
 // RETWEET BOT ==========================
 
@@ -58,7 +58,6 @@ var favoriteTweet = function(){
       result_type: 'recent',
       lang: 'en'
   };
-  
   
   // find the tweet
   Twitter.get('search/tweets', params, function(err,data){
