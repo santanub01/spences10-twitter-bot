@@ -14,12 +14,19 @@ var queryList = [
     'freecodecamp',
     'github',
     'vscode',
+    'visual studio code',
+    'nodejs',
     'node.js',
+    'vuejs',
     'vue.js',
-    'inferno.js'
+    'inferno_js',
+    'inferno.js',
+    'jekyll'
 ];
 var randomNumber = Math.floor(Math.random()*queryList.length);
 var queryString = queryList[randomNumber];
+
+console.log('Query String: ' + queryString)
 
 // RETWEET BOT ==========================
 
@@ -113,7 +120,7 @@ function followed(event) {
   var name = event.source.name,
       screenName = event.source.screen_name;
   // function that replies back to every USER who followed for the first time
-  tweetNow('@' + screenName + ' Thanks for the follow! What are you working on today?');
+  tweetNow('Hi @' + screenName + ' thanks for the follow! What are you working on today?');
 }
 
 // function definition to tweet back to USER who followed
