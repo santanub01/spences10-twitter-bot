@@ -1,15 +1,15 @@
 // Dependencies =========================
 var 
     twit = require('twit'),
-    config = require('./config.js');
+    config = require('./config.js'),
+    uniqueRandomArray = require('unique-random-array');
     
 var Twitter = new twit(config);
 
 // https://dev.twitter.com/rest/reference/get/search/tweets
 // A UTF-8, URL-encoded search query of 500 characters maximum, including operators. 
 // Queries may additionally be limited by complexity.
-
-var queryList = [
+var queryString = uniqueRandomArray([
     '100daysofcode',
     'freecodecamp',
     'github',
@@ -22,21 +22,17 @@ var queryList = [
     'inferno_js',
     'inferno.js',
     'jekyll'
-];
-var randomNumber = Math.floor(Math.random()*queryList.length);
-var queryString = queryList[randomNumber];
-
-console.log('Query String: ' + queryString)
+  ]);
 
 // RETWEET BOT ==========================
 
 // find latest tweet according the query 'q' in params
 var retweet = function() {
     var params = {
-        q: queryString,  // REQUIRED
+        q: queryString(),  // REQUIRED
         result_type: 'mixed',
         lang: 'en'
-    }
+    };
     Twitter.get('search/tweets', params, function(err, data) {
       // if there no errors
         if (!err) {
@@ -47,11 +43,11 @@ var retweet = function() {
                 id: retweetId
             }, function(err, response) {
                 if (response) {
-                    console.log('Retweeted!!!' + 'Query String: ' + queryString);
+                    console.log('Retweeted!!!' + ' Query String: ' + queryString());
                 }
                 // if there was an error while tweeting
                 if (err) {
-                    console.log('Something went wrong while RETWEETING... Duplication maybe...: ' + err + 'Query String: ' + queryString);
+                    console.log('Something went wrong while RETWEETING... Duplication maybe...: ' + err + ' Query String: ' + queryString());
                 }
             });
         }
@@ -72,7 +68,7 @@ setInterval(retweet, 300000);
 // find a random tweet and 'favorite' it
 var favoriteTweet = function(){
   var params = {
-      q: queryString,  // REQUIRED
+      q: queryString(),  // REQUIRED
       result_type: 'mixed',
       lang: 'en'
   };
@@ -90,10 +86,10 @@ var favoriteTweet = function(){
       Twitter.post('favorites/create', {id: randomTweet.id_str}, function(err, response){
         // if there was an error while 'favorite'
         if(err){
-          console.log('CANNOT BE FAVORITE... Error: ' + err + 'Query String: ' + queryString);
+          console.log('CANNOT BE FAVORITE... Error: ' + err + ' Query String: ' + queryString());
         }
         else{
-          console.log('FAVORITED... Success!!!' + 'Query String: ' + queryString);
+          console.log('FAVORITED... Success!!!' + ' Query String: ' + queryString());
         }
       });
     }
