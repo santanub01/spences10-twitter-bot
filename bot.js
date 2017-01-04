@@ -34,7 +34,7 @@ console.log('Query String: ' + queryString)
 var retweet = function() {
     var params = {
         q: queryString,  // REQUIRED
-        result_type: 'recent',
+        result_type: 'mixed',
         lang: 'en'
     }
     Twitter.get('search/tweets', params, function(err, data) {
@@ -47,11 +47,11 @@ var retweet = function() {
                 id: retweetId
             }, function(err, response) {
                 if (response) {
-                    console.log('Retweeted!!!');
+                    console.log('Retweeted!!!' + 'Query String: ' + queryString);
                 }
                 // if there was an error while tweeting
                 if (err) {
-                    console.log('Something went wrong while RETWEETING... Duplication maybe...: ' + err);
+                    console.log('Something went wrong while RETWEETING... Duplication maybe...: ' + err + 'Query String: ' + queryString);
                 }
             });
         }
@@ -73,7 +73,7 @@ setInterval(retweet, 300000);
 var favoriteTweet = function(){
   var params = {
       q: queryString,  // REQUIRED
-      result_type: 'recent',
+      result_type: 'mixed',
       lang: 'en'
   };
   
@@ -90,10 +90,10 @@ var favoriteTweet = function(){
       Twitter.post('favorites/create', {id: randomTweet.id_str}, function(err, response){
         // if there was an error while 'favorite'
         if(err){
-          console.log('CANNOT BE FAVORITE... Error: ' + err);
+          console.log('CANNOT BE FAVORITE... Error: ' + err + 'Query String: ' + queryString);
         }
         else{
-          console.log('FAVORITED... Success!!!');
+          console.log('FAVORITED... Success!!!' + 'Query String: ' + queryString);
         }
       });
     }
