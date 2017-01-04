@@ -6,6 +6,8 @@ var
     
 var Twitter = new twit(config);
 
+// RANDOM QUERY STRING  =========================
+
 // https://dev.twitter.com/rest/reference/get/search/tweets
 // A UTF-8, URL-encoded search query of 500 characters maximum, including operators. 
 // Queries may additionally be limited by complexity.
@@ -27,6 +29,12 @@ var queryString = uniqueRandomArray([
 // RETWEET BOT ==========================
 
 // find latest tweet according the query 'q' in params
+
+// result_type: options, mixed, recent, popular
+// * mixed : Include both popular and real time results in the response.
+// * recent : return only the most recent results in the response
+// * popular : return only the most popular results in the response.
+
 var retweet = function() {
     var params = {
         q: queryString(),  // REQUIRED
