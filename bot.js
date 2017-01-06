@@ -23,7 +23,9 @@ var queryString = uniqueRandomArray([
     'vue.js',
     'inferno_js',
     'inferno.js',
-    'jekyll'
+    'jekyll',
+    'laravel',
+    'laravelphp'
   ]);
 
 // RETWEET BOT ==========================
@@ -123,8 +125,17 @@ function followed(event) {
   // get USER's twitter handler (screen name)
   var name = event.source.name,
       screenName = event.source.screen_name;
+  // CREATE RANDOM RESPONSE  ============================
+  var responseString = uniqueRandomArray([
+    `Hi @${screenName} thanks for the follow! What are you working on today? .CR`,
+    `@${screenName} thanks for following! What are you working on today? .CR`,
+    `Hey @${screenName} thanks for the follow! What are you working on today? .CR`,
+    `Thanks for following @${screenName}! What are you working on today? .CR`,
+    `Hey @${screenName}! Am I following U? @mention me so I can follow back!`,
+    `Thanks for following @${screenName}! I look forward to tweeting with you. .CR`
+  ]);
   // function that replies back to every USER who followed for the first time
-  tweetNow('Hi @' + screenName + ' thanks for the follow! What are you working on today?');
+  tweetNow(responseString());
 }
 
 // function definition to tweet back to USER who followed
