@@ -1,5 +1,7 @@
 # Build a Twitter bot
 
+[![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg?style=flat-square)](http://opensource.org/licenses/MIT)
+
 This project came out of me taking part in the [#100DaysOfCode](https://medium.freecodecamp.com/start-2017-with-the-100daysofcode-improved-and-updated-18ce604b237b) challenge.
 
 It uses the npm package [twit](https://github.com/ttezel/twit)
