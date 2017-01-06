@@ -25,7 +25,11 @@ var queryString = uniqueRandomArray([
     'inferno.js',
     'jekyll',
     'laravel',
-    'laravelphp'
+    'laravelphp',
+    'conditioner.js',
+    'conditionerjs',
+    'svelte.js',
+    'sveltejs'
   ]);
 
 // RETWEET BOT ==========================
