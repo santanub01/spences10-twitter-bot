@@ -38,8 +38,9 @@ var queryString = uniqueRandomArray([
 // * popular : return only the most popular results in the response.
 
 var retweet = function() {
+    var paramQueryString = queryString();
     var params = {
-        q: queryString(),  // REQUIRED
+        q: paramQueryString,  // REQUIRED
         result_type: 'mixed',
         lang: 'en'
     };
@@ -53,11 +54,11 @@ var retweet = function() {
                 id: retweetId
             }, function(err, response) {
                 if (response) {
-                    console.log('Retweeted!!!' + ' Query String: ' + queryString());
+                    console.log('Retweeted!!!' + ' Query String: ' + paramQueryString);
                 }
                 // if there was an error while tweeting
                 if (err) {
-                    console.log('Something went wrong while RETWEETING... Duplication maybe...: ' + err + ' Query String: ' + queryString());
+                    console.log('RETWEET Err... Duplication maybe...: ' + err + ' Query String: ' + paramQueryString);
                 }
             });
         }
@@ -77,8 +78,9 @@ setInterval(retweet, 300000);
 
 // find a random tweet and 'favorite' it
 var favoriteTweet = function(){
+  var paramQueryString = queryString();
   var params = {
-      q: queryString(),  // REQUIRED
+      q: paramQueryString,  // REQUIRED
       result_type: 'mixed',
       lang: 'en'
   };
@@ -96,10 +98,10 @@ var favoriteTweet = function(){
       Twitter.post('favorites/create', {id: randomTweet.id_str}, function(err, response){
         // if there was an error while 'favorite'
         if(err){
-          console.log('CANNOT BE FAVORITE... Error: ' + err + ' Query String: ' + queryString());
+          console.log('CANNOT BE FAVORITE... Error: ' + err + ' Query String: ' + paramQueryString);
         }
         else{
-          console.log('FAVORITED... Success!!!' + ' Query String: ' + queryString());
+          console.log('FAVORITED... Success!!!' + ' Query String: ' + paramQueryString);
         }
       });
     }
@@ -108,6 +110,7 @@ var favoriteTweet = function(){
 
 // grab & 'favorite' as soon as program is running...
 favoriteTweet();
+
 // 'favorite' a tweet in every five minutes
 setInterval(favoriteTweet, 300000);
 
