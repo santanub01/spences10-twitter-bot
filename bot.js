@@ -122,12 +122,19 @@ var stream = Twitter.stream('user');
 // what to do when someone follows you?
 stream.on('follow', followed);
 
+// @ScottDevTweets try using event.source.user_name or you can seadch through twitter api docs
+
 // ...trigger the callback
 function followed(event) {
   console.log('Follow Event now RUNNING');
   // get USER's twitter handler (screen name)
   var name = event.source.name,
       screenName = event.source.screen_name;
+  
+  // try to catch my user name
+  var selfName = event.source.user_name;
+  console.log('selfName:=' + selfName);
+  
   // CREATE RANDOM RESPONSE  ============================
   var responseString = uniqueRandomArray([
     `Hi @${screenName} thanks for the follow! What are you working on today? .CR`,
