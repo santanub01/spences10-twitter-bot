@@ -54,11 +54,11 @@ var retweet = function() {
                 id: retweetId
             }, function(err, response) {
                 if (response) {
-                    console.log('Retweeted!!!' + ' Query String: ' + paramQueryString);
+                    console.log('RETWEETED!' + ' Query String: ' + paramQueryString);
                 }
                 // if there was an error while tweeting
                 if (err) {
-                    console.log('RETWEET Err... Duplication maybe...: ' + err + ' Query String: ' + paramQueryString);
+                    console.log('RETWEET ERROR! Duplication maybe...: ' + err + ' Query String: ' + paramQueryString);
                 }
             });
         }
@@ -138,7 +138,9 @@ function followed(event) {
     `Thanks for following @${screenName}! I look forward to tweeting with you. .CR`
   ]);
   // function that replies back to every USER who followed for the first time
-  tweetNow(responseString());
+  var tweetResponse = responseString();
+  tweetNow(tweetResponse);
+  console.log(tweetResponse);
 }
 
 // function definition to tweet back to USER who followed
