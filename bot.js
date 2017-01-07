@@ -165,13 +165,13 @@ function followed(event) {
         `Thanks for following @${screenName}! I look forward to tweeting with you. .CR`
     ]);
     // function that replies back to every USER who followed for the first time
-    var tweetResponse = responseString();
+    var tweetResponse = responseString(selfId);
     if (userID != selfId) {
         tweetNow(tweetResponse);
         console.log(tweetResponse);
-        console.log('userID: ' + userID + 'selfId: ' + selfId);
+        console.log('userID: ' + userID + ' selfId: ' + selfId);
     } else {
-        console.log('userID: ' + userID + 'selfId: ' + selfId);
+        console.log('userID: ' + userID + ' selfId: ' + selfId);
     }
 }
 
