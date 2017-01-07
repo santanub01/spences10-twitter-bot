@@ -124,36 +124,38 @@ setInterval(favoriteTweet, 300000);
 var stream = Twitter.stream('user');
 
 // REPLY-FOLLOW BOT ============================
+
+// return self credentials
+var selfId;
+
+Twitter.get('account/verify_credentials', {
+        skip_status: true
+    })
+    .catch(function (err) {
+        console.log('caught error', err.stack);
+    })
+    .then(function (result) {
+        // `result` is an Object with keys "data" and "resp". 
+        // `data` and `resp` are the same objects as the ones passed 
+        // to the callback. 
+        // See https://github.com/ttezel/twit#tgetpath-params-callback 
+        // for details. 
+
+        // try to catch my user name
+        console.log('selfId:=' + selfId);
+        return selfId = result.data.id_str;
+    });
+
 // what to do when someone follows you?
 stream.on('follow', followed);
 
 // ...trigger the callback
-function followed(event) {
+function followed(event, selfId) {
     console.log('Follow Event now RUNNING');
     // get USER's twitter handler (screen name)
     var name = event.source.name,
         screenName = event.source.screen_name,
-        userID = event.source.id,
-        selfId;
-
-    // return self credentials
-    Twitter.get('account/verify_credentials', {
-            skip_status: true
-        })
-        .catch(function (err) {
-            console.log('caught error', err.stack);
-        })
-        .then(function (result) {
-            // `result` is an Object with keys "data" and "resp". 
-            // `data` and `resp` are the same objects as the ones passed 
-            // to the callback. 
-            // See https://github.com/ttezel/twit#tgetpath-params-callback 
-            // for details. 
-
-            // try to catch my user name
-            console.log('selfId:=' + selfId);
-            return selfId = result.data.id_str;
-        });
+        userID = event.source.id;
 
     // CREATE RANDOM RESPONSE  ============================
     var responseString = uniqueRandomArray([
@@ -166,7 +168,6 @@ function followed(event) {
     ]);
     
     // function that replies back to every USER who followed for the first time
-    
     var tweetResponse = responseString();
     
     if (userID != selfId) {
@@ -176,7 +177,6 @@ function followed(event) {
     } else {
         console.log('userID: ' + userID + ' selfId: ' + selfId);
     }
-    
     
 }
 
