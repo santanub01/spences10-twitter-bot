@@ -169,6 +169,7 @@ function followed(event) {
     if (userID != selfId) {
         tweetNow(tweetResponse);
         console.log(tweetResponse);
+        console.log('userID: ' + userID + 'selfId: ' + selfId);
     } else {
         console.log('userID: ' + userID + 'selfId: ' + selfId);
     }
