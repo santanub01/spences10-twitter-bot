@@ -1,9 +1,9 @@
 // Dependencies =========================
-var 
+var
     twit = require('twit'),
     config = require('./config.js'),
     uniqueRandomArray = require('unique-random-array');
-    
+
 var Twitter = new twit(config);
 
 // RANDOM QUERY STRING  =========================
@@ -30,7 +30,7 @@ var queryString = uniqueRandomArray([
     'conditionerjs',
     'svelte.js',
     'sveltejs'
-  ]);
+]);
 
 // RETWEET BOT ==========================
 
@@ -41,22 +41,22 @@ var queryString = uniqueRandomArray([
 // * recent : return only the most recent results in the response
 // * popular : return only the most popular results in the response.
 
-var retweet = function() {
+var retweet = function () {
     var paramQueryString = queryString();
     var params = {
-        q: paramQueryString,  // REQUIRED
+        q: paramQueryString, // REQUIRED
         result_type: 'mixed',
         lang: 'en'
     };
-    Twitter.get('search/tweets', params, function(err, data) {
-      // if there no errors
+    Twitter.get('search/tweets', params, function (err, data) {
+        // if there no errors
         if (!err) {
-          // grab ID of tweet to retweet
+            // grab ID of tweet to retweet
             var retweetId = data.statuses[0].id_str;
             // Tell TWITTER to retweet
             Twitter.post('statuses/retweet/:id', {
                 id: retweetId
-            }, function(err, response) {
+            }, function (err, response) {
                 if (response) {
                     console.log('RETWEETED!' + ' Query String: ' + paramQueryString);
                 }
@@ -68,7 +68,7 @@ var retweet = function() {
         }
         // if unable to Search a tweet
         else {
-          console.log('Something went wrong while SEARCHING...');
+            console.log('Something went wrong while SEARCHING...');
         }
     });
 }
@@ -81,35 +81,36 @@ setInterval(retweet, 300000);
 // FAVORITE BOT====================
 
 // find a random tweet and 'favorite' it
-var favoriteTweet = function(){
-  var paramQueryString = queryString();
-  var params = {
-      q: paramQueryString,  // REQUIRED
-      result_type: 'mixed',
-      lang: 'en'
-  };
-  
-  // find the tweet
-  Twitter.get('search/tweets', params, function(err,data){
+var favoriteTweet = function () {
+    var paramQueryString = queryString();
+    var params = {
+        q: paramQueryString, // REQUIRED
+        result_type: 'mixed',
+        lang: 'en'
+    };
 
-    // find tweets
-    var tweet = data.statuses;
-    var randomTweet = ranDom(tweet);   // pick a random tweet
+    // find the tweet
+    Twitter.get('search/tweets', params, function (err, data) {
 
-    // if random tweet exists
-    if(typeof randomTweet != 'undefined'){
-      // Tell TWITTER to 'favorite'
-      Twitter.post('favorites/create', {id: randomTweet.id_str}, function(err, response){
-        // if there was an error while 'favorite'
-        if(err){
-          console.log('CANNOT BE FAVORITE... Error: ' + err + ' Query String: ' + paramQueryString);
+        // find tweets
+        var tweet = data.statuses;
+        var randomTweet = ranDom(tweet); // pick a random tweet
+
+        // if random tweet exists
+        if (typeof randomTweet != 'undefined') {
+            // Tell TWITTER to 'favorite'
+            Twitter.post('favorites/create', {
+                id: randomTweet.id_str
+            }, function (err, response) {
+                // if there was an error while 'favorite'
+                if (err) {
+                    console.log('CANNOT BE FAVORITE... Error: ' + err + ' Query String: ' + paramQueryString);
+                } else {
+                    console.log('FAVORITED... Success!!!' + ' Query String: ' + paramQueryString);
+                }
+            });
         }
-        else{
-          console.log('FAVORITED... Success!!!' + ' Query String: ' + paramQueryString);
-        }
-      });
-    }
-  });
+    });
 };
 
 // grab & 'favorite' as soon as program is running...
@@ -126,52 +127,70 @@ var stream = Twitter.stream('user');
 // what to do when someone follows you?
 stream.on('follow', followed);
 
-// @ScottDevTweets try using event.source.user_name or you can seadch through twitter api docs
-
 // ...trigger the callback
 function followed(event) {
-  console.log('Follow Event now RUNNING');
-  // get USER's twitter handler (screen name)
-  var name = event.source.name,
-      screenName = event.source.screen_name;
-  
-  // try to catch my user name
-  var selfName = event.source.user_name;
-  console.log('selfName:=' + selfName);
-  
-  // CREATE RANDOM RESPONSE  ============================
-  var responseString = uniqueRandomArray([
-    `Hi @${screenName} thanks for the follow! What are you working on today? .CR`,
-    `@${screenName} thanks for following! What are you working on today? .CR`,
-    `Hey @${screenName} thanks for the follow! What are you working on today? .CR`,
-    `Thanks for following @${screenName}! What are you working on today? .CR`,
-    `Hey @${screenName}! Am I following U? @mention me so I can follow back!`,
-    `Thanks for following @${screenName}! I look forward to tweeting with you. .CR`
-  ]);
-  // function that replies back to every USER who followed for the first time
-  var tweetResponse = responseString();
-  tweetNow(tweetResponse);
-  console.log(tweetResponse);
+    console.log('Follow Event now RUNNING');
+    // get USER's twitter handler (screen name)
+    var name = event.source.name,
+        screenName = event.source.screen_name,
+        userID = event.source.id,
+        selfId;
+
+    // return self credentials
+    Twitter.get('account/verify_credentials', {
+            skip_status: true
+        })
+        .catch(function (err) {
+            console.log('caught error', err.stack);
+        })
+        .then(function (result) {
+            // `result` is an Object with keys "data" and "resp". 
+            // `data` and `resp` are the same objects as the ones passed 
+            // to the callback. 
+            // See https://github.com/ttezel/twit#tgetpath-params-callback 
+            // for details. 
+
+            // try to catch my user name
+            selfId = result.data.id_str;
+            console.log('selfId:=' + selfId);
+        });
+
+    // CREATE RANDOM RESPONSE  ============================
+    var responseString = uniqueRandomArray([
+        `Hi @${screenName} thanks for the follow! What are you working on today? .CR`,
+        `@${screenName} thanks for following! What are you working on today? .CR`,
+        `Hey @${screenName} thanks for the follow! What are you working on today? .CR`,
+        `Thanks for following @${screenName}! What are you working on today? .CR`,
+        `Hey @${screenName}! Am I following U? @mention me so I can follow back!`,
+        `Thanks for following @${screenName}! I look forward to tweeting with you. .CR`
+    ]);
+    // function that replies back to every USER who followed for the first time
+    var tweetResponse = responseString();
+    if (userID != selfId) {
+        tweetNow(tweetResponse);
+        console.log(tweetResponse);
+    } else {
+        console.log('userID: ' + userID + 'selfId: ' + selfId);
+    }
 }
 
 // function definition to tweet back to USER who followed
 function tweetNow(tweetTxt) {
-  var tweet = {
-    status: tweetTxt
-  };
-  Twitter.post('statuses/update', tweet, function (err,data, response) {
-    if(err){
-      console.log('Cannot Reply to Follower. ERROR!: ' + err);
-    }
-    else{
-      console.log('Reply to follower. SUCCESS!');
-    }
-  });
+    var tweet = {
+        status: tweetTxt
+    };
+    Twitter.post('statuses/update', tweet, function (err, data, response) {
+        if (err) {
+            console.log('Cannot Reply to Follower. ERROR!: ' + err);
+        } else {
+            console.log('Reply to follower. SUCCESS!');
+        }
+    });
 }
 
 // function to generate a random tweet tweet
-function ranDom (arr) {
-  var index = Math.floor(Math.random()*arr.length);
-  console.log('arr: ' + index);
-  return arr[index];
+function ranDom(arr) {
+    var index = Math.floor(Math.random() * arr.length);
+    console.log('arr: ' + index);
+    return arr[index];
 }
