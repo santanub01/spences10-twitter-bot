@@ -151,8 +151,8 @@ function followed(event) {
             // for details. 
 
             // try to catch my user name
-            selfId = result.data.id_str;
             console.log('selfId:=' + selfId);
+            return selfId = result.data.id_str;
         });
 
     // CREATE RANDOM RESPONSE  ============================
@@ -164,8 +164,11 @@ function followed(event) {
         `Hey @${screenName}! Am I following U? @mention me so I can follow back!`,
         `Thanks for following @${screenName}! I look forward to tweeting with you. .CR`
     ]);
+    
     // function that replies back to every USER who followed for the first time
-    var tweetResponse = responseString(selfId);
+    
+    var tweetResponse = responseString();
+    
     if (userID != selfId) {
         tweetNow(tweetResponse);
         console.log(tweetResponse);
@@ -173,6 +176,8 @@ function followed(event) {
     } else {
         console.log('userID: ' + userID + ' selfId: ' + selfId);
     }
+    
+    
 }
 
 // function definition to tweet back to USER who followed
