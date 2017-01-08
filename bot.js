@@ -126,31 +126,30 @@ var stream = Twitter.stream('user');
 // REPLY-FOLLOW BOT ============================
 
 // return self credentials
-var selfId;
-
-Twitter.get('account/verify_credentials', {
-        skip_status: true
-    })
+var selfId = function () {
+  
+  Twitter.get('account/verify_credentials', { skip_status: true })
     .catch(function (err) {
-        console.log('caught error', err.stack);
+      console.log('caught error', err.stack);
     })
+    
     .then(function (result) {
-        // `result` is an Object with keys "data" and "resp". 
-        // `data` and `resp` are the same objects as the ones passed 
-        // to the callback. 
-        // See https://github.com/ttezel/twit#tgetpath-params-callback 
-        // for details. 
-
-        // try to catch my user name
-        console.log('selfId:=' + selfId);
-        return selfId = result.data.id_str;
+      // `result` is an Object with keys "data" and "resp". 
+      // `data` and `resp` are the same objects as the ones passed 
+      // to the callback. 
+      // See https://github.com/ttezel/twit#tgetpath-params-callback 
+      // for details.
+      // console.log(result.data.id_str);
+      return result.data.id_str;
     });
+    
+};
 
 // what to do when someone follows you?
 stream.on('follow', followed);
 
 // ...trigger the callback
-function followed(event, selfId) {
+function followed(event) {
     console.log('Follow Event now RUNNING');
     // get USER's twitter handler (screen name)
     var name = event.source.name,
@@ -163,21 +162,17 @@ function followed(event, selfId) {
         `@${screenName} thanks for following! What are you working on today? .CR`,
         `Hey @${screenName} thanks for the follow! What are you working on today? .CR`,
         `Thanks for following @${screenName}! What are you working on today? .CR`,
-        `Hey @${screenName}! Am I following U? @mention me so I can follow back!`,
-        `Thanks for following @${screenName}! I look forward to tweeting with you. .CR`
+        `Thanks for following @${screenName}! I look forward to tweeting with you. .CR`,
+        `Hey @${screenName}, working on anything code related today? Thanks for following! .CR`,
+        `Awesome @${screenName}, thanks for following!`
     ]);
     
     // function that replies back to every USER who followed for the first time
     var tweetResponse = responseString();
-    
-    if (userID != selfId) {
-        tweetNow(tweetResponse);
-        console.log(tweetResponse);
-        console.log('userID: ' + userID + ' selfId: ' + selfId);
-    } else {
-        console.log('userID: ' + userID + ' selfId: ' + selfId);
-    }
-    
+
+    console.log(tweetResponse);
+    tweetNow(tweetResponse);
+
 }
 
 // function definition to tweet back to USER who followed
@@ -185,13 +180,21 @@ function tweetNow(tweetTxt) {
     var tweet = {
         status: tweetTxt
     };
-    Twitter.post('statuses/update', tweet, function (err, data, response) {
-        if (err) {
-            console.log('Cannot Reply to Follower. ERROR!: ' + err);
-        } else {
-            console.log('Reply to follower. SUCCESS!');
-        }
-    });
+    
+    // HARCODE user name in and check before RT
+    var n = tweetTxt.search(/@ScottDevTweets/i);
+
+    if (n!=-1) {
+        console.log('TWEET SELF! Skipped!!');
+    } else { 
+        Twitter.post('statuses/update', tweet, function (err, data, response) {
+            if (err) {
+                console.log('Cannot Reply to Follower. ERROR!: ' + err);
+            } else {
+                console.log('Reply to follower. SUCCESS!');
+            }
+        });
+    }
 }
 
 // function to generate a random tweet tweet
