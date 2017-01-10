@@ -7,4 +7,4 @@ logs
 npm-debug.log*
 
 # twitter keys
-src/config.js
+config.js
