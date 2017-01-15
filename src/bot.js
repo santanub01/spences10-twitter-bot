@@ -7,9 +7,8 @@ var
 
 var Twitter = new twit(config);
 
-var retweetFrequency = .2;
-var favoriteFrequency = .2;
-var tweetFrequency = 5;
+var retweetFrequency = 5;
+var favoriteFrequency = 5;
 
 // RANDOM QUERY STRING  =========================
 
