@@ -7,8 +7,8 @@ var
 
 var Twitter = new twit(config);
 
-var retweetFrequency = 5;
-var favoriteFrequency = 5;
+var retweetFrequency = .2;
+var favoriteFrequency = .2;
 var tweetFrequency = 5;
 
 // RANDOM QUERY STRING  =========================
@@ -41,7 +41,14 @@ var retweet = function() {
         // if there no errors
         if (!err) {
             // grab ID of tweet to retweet
-            var retweetId = data.statuses[0].id_str;
+            try {
+                // try get tweet id, derp if not
+                var retweetId = data.statuses[0].id_str;
+            }
+            catch (e) {
+                console.log('retweetId DERP! ',e.message);
+                return;
+            }
             // Tell TWITTER to retweet
             Twitter.post('statuses/retweet/:id', {
                 id: retweetId
@@ -150,13 +157,15 @@ function followed(event) {
 
     // CREATE RANDOM RESPONSE  ============================
     var responseString = ura([
-        `Hi @${screenName} thanks for the follow! What are you working on today? .CR`,
-        `@${screenName} thanks for following! What are you working on today? .CR`,
-        `Hey @${screenName} thanks for the follow! What are you working on today? .CR`,
-        `Thanks for following @${screenName}! What are you working on today? .CR`,
-        `Thanks for following @${screenName}! I look forward to tweeting with you. .CR`,
-        `Hey @${screenName}, working on anything code related today? Thanks for following! .CR`,
-        `Awesome @${screenName}, thanks for following!`
+        `Hi @${screenName} thanks for the follow! What are you working on today? !CR`,
+        `@${screenName} thanks for following! What are you working on today? !CR`,
+        `Hey @${screenName} thanks for the follow! What are you working on today? !CR`,
+        `Thanks for following @${screenName}! What are you working on today? !CR`,
+        `Thanks for following @${screenName}! I look forward to tweeting with you. !CR`,
+        `Hey @${screenName}, working on anything code related today? Thanks for following! !CR`,
+        `Awesome @${screenName}, thanks for following! !CR`,
+        `Thanks for the follow @${screenName}! !CR`,
+        `Thanks for the following @${screenName}! How are you today? !CR`
     ]);
 
     // function that replies back to every USER who followed for the first time
@@ -194,6 +203,5 @@ function tweetNow(tweetTxt) {
 // function to generate a random tweet tweet
 function ranDom(arr) {
     var index = Math.floor(Math.random() * arr.length);
-    console.log('arr: ' + index);
     return arr[index];
 }
