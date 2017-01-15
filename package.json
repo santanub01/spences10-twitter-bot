@@ -11,5 +11,17 @@
   "dependencies": {
     "twit": "^2.2.5",
     "unique-random-array": "^1.0.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spences10/spences10-twitter-bot.git"
+  },
+  "keywords": [
+    "bot",
+    "twitter"
+  ],
+  "bugs": {
+    "url": "https://github.com/spences10/spences10-twitter-bot/issues"
+  },
+  "homepage": "https://github.com/spences10/spences10-twitter-bot#readme"
 }
