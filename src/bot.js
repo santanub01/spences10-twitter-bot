@@ -3,7 +3,7 @@ var
     twit = require('twit'),
     ura = require('unique-random-array'),
     config = require('./config'),
-    strings = require('./strings');
+    strings = require('./helpers/strings');
 
 var Twitter = new twit(config);
 
@@ -17,7 +17,7 @@ var qs = ura(strings.queryString);
 var rt = ura(strings.resultType);
 
 // https://dev.twitter.com/rest/reference/get/search/tweets
-// A UTF-8, URL-encoded search query of 500 characters maximum, including operators. 
+// A UTF-8, URL-encoded search query of 500 characters maximum, including operators.
 // Queries may additionally be limited by complexity.
 
 // RETWEET BOT ==========================
@@ -133,10 +133,10 @@ var selfId = function() {
         })
 
     .then(function(result) {
-        // `result` is an Object with keys "data" and "resp". 
-        // `data` and `resp` are the same objects as the ones passed 
-        // to the callback. 
-        // See https://github.com/ttezel/twit#tgetpath-params-callback 
+        // `result` is an Object with keys "data" and "resp".
+        // `data` and `resp` are the same objects as the ones passed
+        // to the callback.
+        // See https://github.com/ttezel/twit#tgetpath-params-callback
         // for details.
         // console.log(result.data.id_str);
         return result.data.id_str;
