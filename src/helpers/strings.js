@@ -22,13 +22,7 @@ module.exports = {
         'conditioner.js',
         'conditionerjs',
         'svelte.js',
-        'sveltejs',
-        'docker',
-        'docker best practice',
-        'Cloud9IDE',
-        'Cloud9IDE best practice',
-        'javascript',
-        'javascript30'
+        'sveltejs'
     ],
     blackListUsers: [
         'ScottDevTweets'
